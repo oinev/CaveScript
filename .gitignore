@@ -1,0 +1,12 @@
+/target
+/docs/language.legacy
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Rust
+**/*.rs.bk

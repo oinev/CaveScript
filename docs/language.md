@@ -16,7 +16,7 @@
 - [Functions](#functions)
 - [Arrays](#arrays)
 - [Custom Types](#custom-types)
-  - [Type Aliases](#type-aliases)
+  - [Named Types](#type-aliases)
   - [Structs](#structs)
   - [Enums](#enums)
 - [Methods](#methods)
@@ -210,7 +210,7 @@ Structs may be initialized using field assignments.
 
 ```cavescript
 var laser: Line = {
-    length = 2
+    length = 1
     width = 1
 }
 ```
@@ -295,7 +295,7 @@ line.addSize(5)
 
 > 🚧 **Work in Progress**
 >
-> CaveScript is designed specifically for **Deep Rock Galactic Custom Difficulty 2**.
+> CaveScript is designed specifically for **Custom Difficulty 2**.
 >
 > Future versions of this documentation will include:
 >

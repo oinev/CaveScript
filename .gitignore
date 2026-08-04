@@ -1,5 +1,6 @@
 /target
-/docs/language.legacy
+/lexer/target
+/exec/target
 # IDE
 .idea/
 .vscode/

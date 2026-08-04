@@ -1,6 +1,6 @@
-use crate::{error::TokenError, span::Span, token::Token, token_kind::TokenKind};
 
-pub mod token_kind; 
+use crate::{error::TokenError, span::Span, token::Token, token::TokenKind};
+
 pub mod span;
 pub mod token;
 pub mod error;
@@ -8,7 +8,7 @@ pub mod error;
 
 
 
-struct Lexer<'a> {
+pub struct Lexer<'a> {
     source: &'a str,
     cursor: usize, // usize index into source / where you are in bytes from the start of file
 }
@@ -38,19 +38,39 @@ impl<'a> Lexer<'a> {
         Some(c)
     }
 
-    fn next_token(&mut self) -> Result<Option<Token>, TokenError> { // also refered to as dispatcher
+    fn next_token(&mut self) -> Result<Option<Token<'a>>, TokenError> { // also refered to as dispatcher
+        self.ignore_whitespaces();
+        
         // check for end of file
+        let token = match self.peek() { // checks for first character and maps to correct lexer
+            None => return Ok(None),
 
-    
+            Some(c) if Self::is_identifier_start(c)
+            => self.lex_ident_or_keyword(),
 
+            Some(c) if c.is_ascii_digit()
+            => self.lex_number(),
 
+            Some('"') => self.lex_string(),
 
+            Some('\'') => self.lex_char(),
 
+            Some(_) => self.lex_symbol(),
 
-        unimplemented!()
+        };
+
+        return Ok(Some(token?))
     }
     
-    fn ignore_whitespace() {unimplemented!()}
+    fn ignore_whitespaces(&mut self) {
+    while let Some(c) = self.peek() {
+        if !c.is_whitespace() {
+            break;
+        }
+
+        self.advance();
+    }
+}
     
 
     
@@ -62,7 +82,7 @@ impl<'a> Lexer<'a> {
         } else {
             false
         }
-    }
+    } // IGNORE FOR NOW, DELETE IF NOT USED
 
     fn consume_while<F>(&mut self, pred: F) -> &'a str
     where
@@ -91,7 +111,7 @@ impl<'a> Lexer<'a> {
 
 
     // lexers ---{
-    fn lex_ident_or_keyword(&mut self) -> Token {
+    fn lex_ident_or_keyword(&mut self) -> Result<Token<'a>, TokenError> {
         let start = self.cursor;
 
         let lexeme = self.consume_while(Self::is_identifier_continue);
@@ -119,10 +139,10 @@ impl<'a> Lexer<'a> {
             _ => TokenKind::Identifier
         };
 
-        self.build_token(kind, lexeme, start)
+        Ok(self.build_token(kind, lexeme, start))
     }
 
-    fn lex_number(&mut self) -> Token {
+    fn lex_number(&mut self) -> Result<Token<'a>, TokenError> {
         let start = self.cursor;
 
         let lexeme = self.consume_while(|c| c.is_ascii_digit());
@@ -135,14 +155,14 @@ impl<'a> Lexer<'a> {
         } else {
             TokenKind::Integer
         };
-        self.build_token(kind, lexeme, start)
+        Ok(self.build_token(kind, lexeme, start))
     }
 
-    fn lex_string() {}
+    fn lex_string(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
 
-    fn lex_char() {}
+    fn lex_char(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
     
-    fn symbol() {}
+    fn lex_symbol(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
 
 
     // helpers
@@ -158,8 +178,8 @@ impl<'a> Lexer<'a> {
     }
 }
 
-impl<'a> Iterator for Tokenizer<'a> {
-    type Item = Result<Token, TokenError>;
+impl<'a> Iterator for Lexer<'a> {
+    type Item = Result<Token<'a>, TokenError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.next_token() {

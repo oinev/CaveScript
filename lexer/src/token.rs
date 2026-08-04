@@ -1,6 +1,5 @@
 use super::span::Span;
 use super::token_kind::TokenKind;
-use anyhow::{Ok, Result};
 
 #[derive(Debug, Clone)]
 pub struct Token<'src> {
@@ -8,11 +7,80 @@ pub struct Token<'src> {
     pub lexeme: &'src str,
     pub span: Span,
 }
-// impl Token {
-//     pub fn new(kind: TokenKind) -> Self {
-//         Self {
-//             kind,
-//             span: Span::new(0, 0),
-//         }
-//     }
-// } 
+
+#[derive(Debug, Clone)]
+pub enum TokenKind {
+    // Special
+
+    // Literals
+    Identifier,
+    Integer,
+    Float,
+    String,
+    Char,
+    True,
+    False,
+
+    // Primitive types
+    IntTy,
+    FloatTy,
+    BoolTy,
+    CharTy,
+    StringTy,
+
+    // Keywords
+    Let,
+    Var,
+    Fn,
+    Return,
+    Type,
+    Struct,
+    Enum,
+    Impl,
+    To,
+    //If,
+    //Else,
+    //Match,
+    //While,
+    //For,
+    SelfKw,
+
+    // Operators
+    Plus,
+    Minus,
+    Star,
+    Slash,
+    Percent,
+
+    Equal,
+    PlusEqual,
+    MinusEqual,
+    StarEqual,
+    SlashEqual,
+
+    EqualEqual,
+    BangEqual,
+
+    Greater,
+    GreaterEqual,
+    Less,
+    LessEqual,
+
+    AndAnd,
+    OrOr,
+
+    Bang, // !
+
+    // Delimiters
+    LeftParen,
+    RightParen,
+    LeftBrace,
+    RightBrace,
+    LeftBracket,
+    RightBracket,
+
+    Colon,
+    ColonColon,
+    Comma,
+    Dot,
+}

@@ -1,5 +1,4 @@
 use super::span::Span;
-use super::token_kind::TokenKind;
 
 #[derive(Debug, Clone)]
 pub struct Token<'src> {
@@ -51,8 +50,9 @@ pub enum TokenKind {
     Star,
     Slash,
     Percent,
-
     Equal,
+    Bang, // !
+
     PlusEqual,
     MinusEqual,
     StarEqual,
@@ -60,7 +60,7 @@ pub enum TokenKind {
 
     EqualEqual,
     BangEqual,
-
+    
     Greater,
     GreaterEqual,
     Less,
@@ -69,7 +69,6 @@ pub enum TokenKind {
     AndAnd,
     OrOr,
 
-    Bang, // !
 
     // Delimiters
     LeftParen,

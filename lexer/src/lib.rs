@@ -14,7 +14,7 @@ pub struct Lexer<'a> {
 }
 
 impl<'a> Lexer<'a> {
-    fn new(source: &'a str) -> Self {
+    pub fn new(source: &'a str) -> Self {
         Self {
             source,
             cursor: 0,
@@ -63,26 +63,26 @@ impl<'a> Lexer<'a> {
     }
     
     fn ignore_whitespaces(&mut self) {
-    while let Some(c) = self.peek() {
-        if !c.is_whitespace() {
-            break;
-        }
+        while let Some(c) = self.peek() {
+            if !c.is_whitespace() {
+                break;
+            }
 
-        self.advance();
+            self.advance();
+        }
     }
-}
     
 
     
     // consume check ---{
-    fn consume_if(&mut self, expected: char) -> bool { // used for clean one character tokens
+    fn consume_if(&mut self, expected: char) -> bool { // used for clean 1-2 character tokens
         if self.peek() == Some(expected) {
             self.advance();
             true
         } else {
             false
         }
-    } // IGNORE FOR NOW, DELETE IF NOT USED
+    }
 
     fn consume_while<F>(&mut self, pred: F) -> &'a str
     where
@@ -106,6 +106,10 @@ impl<'a> Lexer<'a> {
 
     fn is_identifier_continue(c: char) -> bool { // to use on consumer, ex: foo123 is valid while 123foo is not
         c.is_ascii_alphanumeric() || c == '_'
+    }
+
+    fn is_valid_char_escape(c: char) -> bool {
+        matches!(c, 'n' | 't' | 'r' | '\\' | '\'')
     }
     // consume check ---}
 
@@ -158,12 +162,178 @@ impl<'a> Lexer<'a> {
         Ok(self.build_token(kind, lexeme, start))
     }
 
-    fn lex_string(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
+    fn lex_string(&mut self) -> Result<Token<'a>, TokenError> {
+        let start = self.cursor;
+        self.advance(); // consume "
 
-    fn lex_char(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
+        while let Some(c) = self.peek() {
+            match c {
+                '"' => break,
+            
+                '\\' => {
+                    self.advance(); // consume /
+                    self.advance(); // consume id, ex: /n ; /" ; etc
+                }
+            
+                _ => {
+                    self.advance(); // consume any character
+                }
+            }
+        }
+        if !self.consume_if('"') {
+            return Err(TokenError::UnterminatedString)
+        }
+        let lexeme = &self.source[start..self.cursor];
+
+        Ok(self.build_token(TokenKind::String, lexeme, start))
+
+    }
+
+    fn lex_char(&mut self) -> Result<Token<'a>, TokenError> {
+        let start = self.cursor;
+
+        self.advance(); // consume opening '
+
+        match self.peek() {
+            None => return Err(TokenError::UnterminatedChar),
+
+            Some('\\') => {
+                self.advance(); // consume '\'
+
+                match self.advance() {
+                    Some(c) if Self::is_valid_char_escape(c) => {}
+                    Some(c) => return Err(TokenError::InvalidEscape(c)),
+                    None => return Err(TokenError::UnterminatedEscape),   
+                }
+            }
+
+            Some('\'') => return Err(TokenError::EmptyCharLiteral),
+
+            Some(c) if c.is_ascii() => { self.advance(); }
+
+            Some(_) => return Err(TokenError::InvalidCharLiteral),
+        };
+
+        if !self.consume_if('\'') {
+            return Err(TokenError::UnterminatedChar);
+        }
+        let lexeme = &self.source[start..self.cursor];
+
+        Ok(self.build_token(TokenKind::Char, lexeme, start))
+    }
     
-    fn lex_symbol(&mut self) -> Result<Token<'a>, TokenError> {unimplemented!()}
+    fn lex_symbol(&mut self) -> Result<Token<'a>, TokenError> {
+        let start = self.cursor;
 
+        let kind = match self.advance() {
+
+            // Operators 
+            Some('+') => {
+                if self.consume_if('=') {
+                    TokenKind::PlusEqual
+                } else {
+                    TokenKind::Plus
+                }
+            },
+
+            Some('-') => {
+                if self.consume_if('=') {
+                    TokenKind::MinusEqual
+                } else {
+                    TokenKind::Minus
+                }
+            },
+
+            Some('*') => {
+                if self.consume_if('=') {
+                    TokenKind::StarEqual
+                } else {
+                    TokenKind::Star
+                }
+            },
+
+            Some('/') => {
+                if self.consume_if('=') {
+                    TokenKind::SlashEqual
+                } else {
+                    TokenKind::Slash
+                }
+            },
+
+            Some('%') => TokenKind::Percent, // hoping to implement %= later
+
+            Some('!') => {
+                if self.consume_if('=') {
+                    TokenKind::BangEqual
+                } else {
+                    TokenKind::Bang
+                }
+            }
+
+            Some('=') => {
+                if self.consume_if('=') {
+                    TokenKind::EqualEqual
+                } else {
+                    TokenKind::Equal
+                }
+            },
+
+            Some('>') => {
+                if self.consume_if('=') {
+                    TokenKind::GreaterEqual
+                } else {
+                    TokenKind::Greater
+                }
+            },
+
+            Some('<') => {
+                if self.consume_if('=') {
+                    TokenKind::LessEqual
+                } else {
+                    TokenKind::Less
+                }
+            },
+
+            Some('&') => {
+                if self.consume_if('&') {
+                    TokenKind::AndAnd
+                } else {
+                    return Err(TokenError::UnexpectedCharacter('&'))
+                }
+            },
+
+            Some('|') => {
+                if self.consume_if('|') {
+                    TokenKind::OrOr
+                } else {
+                    return Err(TokenError::UnexpectedCharacter('|'))
+                }
+            },
+
+            // Delimiters
+            Some('(') => TokenKind::LeftParen,
+            Some(')') => TokenKind::RightParen,
+
+            Some('{') => TokenKind::LeftBrace,
+            Some('}') => TokenKind::RightBrace,
+
+            Some('[') => TokenKind::LeftBracket,
+            Some(']') => TokenKind::RightBracket,
+
+            Some(',') => TokenKind::Comma,
+            Some('.') => TokenKind::Dot,
+
+            Some(c) => {
+            return Err(TokenError::UnexpectedCharacter(c))
+            }
+
+            None => unreachable!(),
+        };        
+
+        let lexeme = &self.source[start..self.cursor];
+
+        Ok(self.build_token(kind, lexeme, start))
+    }
 
     // helpers
     fn build_token<'b>(&self, kind: TokenKind, lexeme: &'b str, start: usize)  -> Token<'b> {

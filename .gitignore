@@ -1,6 +1,7 @@
 /target
-/lexer/target
-/exec/target
+compiler/exec/target
+compiler/lexer/target
+compiler/parser/target
 # IDE
 .idea/
 .vscode/

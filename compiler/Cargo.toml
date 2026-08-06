@@ -1,0 +1,14 @@
+[workspace]
+resolver = "3"
+
+members = [
+    "exec",
+    "lexer",
+    "parser",
+]
+
+
+[workspace.dependencies]
+lexer = { path = "lexer" }
+parser = { path = "parser" }
+

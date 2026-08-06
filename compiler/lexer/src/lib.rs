@@ -310,7 +310,14 @@ impl<'a> Lexer<'a> {
                 }
             },
 
-            // Delimiters
+            Some(':') => {
+                if self.consume_if(':') {
+                    TokenKind::ColonColon
+                } else {
+                    TokenKind::Colon
+                }
+            },
+
             Some('(') => TokenKind::LeftParen,
             Some(')') => TokenKind::RightParen,
 
@@ -327,6 +334,7 @@ impl<'a> Lexer<'a> {
             return Err(TokenError::UnexpectedCharacter(c))
             }
 
+            // should never be possible... ideally
             None => unreachable!(),
         };        
 

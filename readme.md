@@ -27,8 +27,8 @@ The language is intentionally focused on a single purpose rather than being a ge
 
 | Component         | Status            |
 | ----------------- | ----------------- |
-| Lexer             | In development    |
-| Parser            | Planned           |
+| Lexer             | In Hold           |
+| Parser            | In development    |
 | Semantic analysis | Planned           |
 | Code generation   | Planned           |
 | Standard library  | Planned           |

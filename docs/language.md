@@ -15,8 +15,8 @@
 - [Variables](#variables)
 - [Functions](#functions)
 - [Arrays](#arrays)
-- [Custom Types](#custom-types)
-  - [Named Types](#type-aliases)
+- [Defined Types](#defined-types)
+  - [Cells](#cells)
   - [Structs](#structs)
   - [Enums](#enums)
 - [Methods](#methods)
@@ -154,13 +154,13 @@ immutable[0] = 10 // Error
 
 ---
 
-# Custom Types
+# Defined Types
 
-## Named Types
+## Cells
 
-The `type` keyword defines a new named type.
+The `type` keyword defines a new cell type.
 
-Unlike a traditional type alias, a named type is a completely distinct type,
+Unlike a traditional type alias, a cell type is a completely distinct type,
 even if it shares the same underlying representation.
 
 ```cavescript

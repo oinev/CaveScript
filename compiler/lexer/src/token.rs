@@ -1,13 +1,13 @@
 use super::span::Span;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Token<'src> {
     pub kind: TokenKind,
     pub lexeme: &'src str,
     pub span: Span,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum TokenKind {
     // Special
 
@@ -52,7 +52,7 @@ pub enum TokenKind {
     Percent,
     Equal,
     Bang, // !
-
+    
     PlusEqual,
     MinusEqual,
     StarEqual,

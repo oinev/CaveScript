@@ -1,4 +1,5 @@
 /target
+compiler/target
 compiler/exec/target
 compiler/lexer/target
 compiler/parser/target
@@ -12,3 +13,6 @@ Thumbs.db
 
 # Rust
 **/*.rs.bk
+
+# Docs
+docs/ast.svg

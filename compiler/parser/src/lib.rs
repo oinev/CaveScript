@@ -1,7 +1,9 @@
-use lexer::{Lexer, error::TokenError, token::Token};
 
+use lexer::{Lexer, error::TokenError, token::{Token, TokenKind}};
 
-
+mod ast;
+mod declaration;
+mod statement;
 
 
 pub struct Parser<'a> {
@@ -26,5 +28,20 @@ impl<'a> Parser<'a> {
     }
     fn peek_next(&self) -> Option<&Token<'a>> {
         self.peek_n(1)
+    }
+
+    fn peek_kind(&self) -> Option<TokenKind> {
+        Some(self.peek()?.kind)
+    }
+
+    fn advance(&mut self) -> Option<&Token<'a>> {
+        let token = self.tokens.get(self.cursor)?;
+        self.cursor += 1;
+        Some(token)
+    }
+    fn parse(&self) {
+        // check for end of file
+        if self.peek_next() == None { return;}
+        
     }
 }

@@ -1,3 +1,5 @@
 pub enum Declaration {
-    stuff,
+    FunctionDecl,
+    TypeDecl,
+    
 }

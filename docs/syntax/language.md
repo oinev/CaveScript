@@ -173,7 +173,7 @@ var weapon: WeaponId = 1
 player = weapon // Error
 ```
 
-Named types may be created from any existing type.
+Cells may be created from any existing type.
 
 ```cavescript
 type PlayerName string

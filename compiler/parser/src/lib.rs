@@ -1,6 +1,8 @@
 
 use lexer::{Lexer, error::TokenError, token::{Token, TokenKind}};
 
+use crate::ast::Module;
+
 mod ast;
 mod declaration;
 mod statement;

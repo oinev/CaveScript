@@ -1,0 +1,45 @@
+ASTNode
+│
+├── Expression                                             <- produces a value
+│   ├── Identifier
+│   ├── Literal
+│   │   ├── IntLiteral
+│   │   ├── FloatLiteral
+│   │   ├── BoolLiteral
+│   │   ├── CharLiteral
+│   │   └── StringLiteral
+│   │
+│   ├── BinaryExpression
+│   ├── CallExpression
+│   ├── MemberExpression
+│   ├── IndexExpression
+│   ├── ArrayLiteral
+│   └── StructLiteral
+│
+├── Statement                                               <- executed as part of a block
+│   ├── ExpressionStatement
+│   ├── ReturnStatement
+│   └── Block
+│
+├── Declaration                                             <- introduces/defines a name or type
+│   ├── VariableDeclaration
+│   ├── FunctionDeclaration
+│   ├── StructDeclaration
+│   ├── EnumDeclaration
+│   ├── CellDeclaration
+│   └── ImplDeclaration
+│
+└── TypeNode                                                <- type syntax written in source
+    │
+    ├── PrimitiveType
+    │   ├── IntType
+    │   ├── FloatType
+    │   ├── BoolType
+    │   ├── CharType
+    │   └── StringType
+    │
+    ├── ArrayType
+    │   └── elementType: TypeNode
+    │
+    └── NamedType                                           <- reference to a declared type
+        └── name

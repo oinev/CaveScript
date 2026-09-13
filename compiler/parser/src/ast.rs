@@ -1,12 +1,12 @@
-use crate::statement::Statement;
 use crate::declaration::Declaration;
+use crate::statement::Statement;
 
 
 pub struct Module {
     pub items: Vec<Object>,
 }
 
-enum Object {
+pub enum Object {
     Declaration(Declaration),
     Statement(Statement)
 }

@@ -1,6 +1,6 @@
 use crate::declaration::Declaration;
 use crate::statement::Statement;
-
+use crate::expression::Expression;
 
 pub struct Module {
     pub items: Vec<Object>,
@@ -8,5 +8,6 @@ pub struct Module {
 
 pub enum Object {
     Declaration(Declaration),
-    Statement(Statement)
+    Statement(Statement),
+    Expression(Expression),
 }

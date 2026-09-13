@@ -1,6 +1,6 @@
 ASTNode
 │
-├── Expression                                             <- produces a value
+├── Expression                                             <- can be evaluated as a value
 │   ├── Identifier
 │   ├── Literal
 │   │   ├── IntLiteral
@@ -8,7 +8,7 @@ ASTNode
 │   │   ├── BoolLiteral
 │   │   ├── CharLiteral
 │   │   └── StringLiteral
-│   │
+│   │ 
 │   ├── BinaryExpression
 │   ├── CallExpression
 │   ├── MemberExpression
@@ -16,8 +16,10 @@ ASTNode
 │   ├── ArrayLiteral
 │   └── StructLiteral
 │
-├── Statement                                               <- executed as part of a block
-│   ├── ExpressionStatement
+├── Statement                                               <- can be executed as part of a sequence of operations
+│   ├── ExpressionStatement                                 <- reference to an expression
+│   ├── DeclarationStatement
+│   ├── AssignmentStatement
 │   ├── ReturnStatement
 │   └── Block
 │

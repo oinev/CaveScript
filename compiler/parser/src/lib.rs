@@ -1,13 +1,8 @@
+mod ast;
 
 use lexer::{Lexer, error::TokenError, token::{Token, TokenKind}};
-
 use crate::ast::Module;
 
-mod ast;
-mod declaration;
-mod statement;
-mod expression;
-mod type_syntax;
 
 pub struct Parser<'a> {
     tokens: Vec<Token<'a>>,

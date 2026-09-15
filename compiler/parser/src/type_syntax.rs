@@ -1,3 +1,0 @@
-pub enum TypeSyntax {
-    toBeDone,
-}

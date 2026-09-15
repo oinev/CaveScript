@@ -1,4 +1,4 @@
-use crate::{expression::Expression, statement::Statement, type_syntax::{NamedType, TypeSyntax}};
+use super::{expression::Expression, statement::Statement, type_syntax::TypeSyntax};
 
 pub enum Declaration {
     VariableDecl {
@@ -10,12 +10,12 @@ pub enum Declaration {
 
     FunctionDecl(FunctionDeclaration),
 
-    StructDecl{
+    StructDecl {
         name: String,
         fields: Vec<FieldDeclaration>,
     },
 
-    EnumDecl{
+    EnumDecl {
         name: String,
         variants: EnumVariants,
     },
@@ -24,7 +24,7 @@ pub enum Declaration {
         underlying_type: TypeSyntax
     },
     ImplDecl {
-    target: NamedType,
+    target: TypeSyntax, // <- must always be NamedType
     methods: Vec<FunctionDeclaration>,
 },
 }
@@ -50,4 +50,4 @@ pub struct FunctionDeclaration {
     pub body: Box<Statement>,
 }
 
-// should you allow declarations inside statement ? if so that means variableDecl is a statement
+// should you allow declarations inside statement ? if not, that means variableDecl is a statement and not a declaration

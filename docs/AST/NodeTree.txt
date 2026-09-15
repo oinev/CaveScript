@@ -31,7 +31,7 @@ ASTNode
 │   ├── CellDeclaration
 │   └── ImplDeclaration
 │
-└── TypeNode                                                <- type syntax written in source
+└── TypeSyntax                                                <- type syntax written in source
     │
     ├── PrimitiveType
     │   ├── IntType
@@ -41,7 +41,7 @@ ASTNode
     │   └── StringType
     │
     ├── ArrayType
-    │   └── elementType: TypeNode
+    │   └── elementType: TypeSyntax
     │
     └── NamedType                                           <- reference to a declared type
         └── name

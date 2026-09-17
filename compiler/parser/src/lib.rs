@@ -1,7 +1,9 @@
 mod ast;
+mod error;
 
 use lexer::{Lexer, error::TokenError, token::{Token, TokenKind}};
-use crate::ast::Module;
+use crate::error::ParseError;
+use crate::ast::{Module, statement::*, expression::*, declaration::*, type_syntax::*};
 
 
 pub struct Parser<'a> {
@@ -16,6 +18,8 @@ impl<'a> Parser<'a> {
             cursor: 0,
         })
     }
+
+    // utils
 
     fn peek_n(&self, n: usize) -> Option<&Token<'a>> {
         debug_assert!(self.cursor <= self.tokens.len()); 
@@ -37,9 +41,37 @@ impl<'a> Parser<'a> {
         self.cursor += 1;
         Some(token)
     }
-    fn parse(&self) {
+
+    fn check(&self, kind: TokenKind) -> bool {
+        self.peek_kind() == Some(kind)
+    }
+
+    fn consume(&mut self, kind: TokenKind) -> bool {
+        if self.check(kind) {
+            self.advance();
+            true
+        } else {
+            false
+        }
+    }
+
+    fn expect(&mut self, kind: TokenKind) -> Result<&Token<'a>, ParseError> {
+        match self.peek() {
+            Some(token) if token.kind == kind => {
+                self.advance().ok_or(ParseError::UnexpectedNextTokenEOF)
+            }
+            Some(token) => Err(ParseError::UnexpectedToken {
+                expected: kind,
+                found: token.kind,
+            }),
+            None => Err(ParseError::UnexpectedEOF),
+        }
+    } 
+
+    fn parse(&self) {  // 
         // check for end of file
         if self.peek_next() == None { return;}
+
+        
         
     }
-}

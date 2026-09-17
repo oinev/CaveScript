@@ -1,47 +1,49 @@
-ASTNode
+Object
 │
-├── Expression                                             <- can be evaluated as a value
-│   ├── Identifier
-│   ├── Literal
-│   │   ├── IntLiteral
-│   │   ├── FloatLiteral
-│   │   ├── BoolLiteral
-│   │   ├── CharLiteral
-│   │   └── StringLiteral
-│   │ 
-│   ├── BinaryExpression
-│   ├── CallExpression
-│   ├── MemberExpression
-│   ├── IndexExpression
-│   ├── ArrayLiteral
-│   └── StructLiteral
+└── Statement                                   <- can be executed as part of a sequence of operations
+    ├── ExpressionStatement
+    │    └── Expression                                  <- can be evaluated as a value
+    │        ├── Identifier
+    │        ├── Literal
+    │        │   ├── IntLiteral
+    │        │   ├── FloatLiteral
+    │        │   ├── BoolLiteral
+    │        │   ├── CharLiteral
+    │        │   └── StringLiteral
+    │        │ 
+    │        ├── BinaryExpression
+    │        ├── CallExpression
+    │        ├── MemberExpression
+    │        ├── IndexExpression
+    │        ├── ArrayLiteral
+    │        └── StructLiteral
+    │ 
+    ├── DeclarationStatement
+    │    └── Declaration                                 <- introduces/defines a name or type
+    │        ├── VariableDeclaration
+    │        ├── FunctionDeclaration
+    │        ├── StructDeclaration
+    │        ├── EnumDeclaration
+    │        ├── CellDeclaration
+    │        └── ImplDeclaration
+    │ 
+    ├── AssignmentStatement
+    ├── ReturnStatement
+    └── Block
+
+
+
+TypeSyntax                                  <- type syntax written in source
 │
-├── Statement                                               <- can be executed as part of a sequence of operations
-│   ├── ExpressionStatement                                 <- reference to an expression
-│   ├── DeclarationStatement
-│   ├── AssignmentStatement
-│   ├── ReturnStatement
-│   └── Block
+├── PrimitiveType
+│   ├── IntType
+│   ├── FloatType
+│   ├── BoolType
+│   ├── CharType
+│   └── StringType
 │
-├── Declaration                                             <- introduces/defines a name or type
-│   ├── VariableDeclaration
-│   ├── FunctionDeclaration
-│   ├── StructDeclaration
-│   ├── EnumDeclaration
-│   ├── CellDeclaration
-│   └── ImplDeclaration
+├── ArrayType
+│   └── elementType: TypeSyntax
 │
-└── TypeSyntax                                                <- type syntax written in source
-    │
-    ├── PrimitiveType
-    │   ├── IntType
-    │   ├── FloatType
-    │   ├── BoolType
-    │   ├── CharType
-    │   └── StringType
-    │
-    ├── ArrayType
-    │   └── elementType: TypeSyntax
-    │
-    └── NamedType                                           <- reference to a declared type
-        └── name
+└── NamedType                               <- reference to a declared type
+    └── name

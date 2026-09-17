@@ -1,17 +1,12 @@
-mod declaration;
-mod statement;
-mod expression;
-mod type_syntax;
+pub mod declaration;
+pub mod statement;
+pub mod expression;
+pub mod type_syntax;
 
 use declaration::Declaration;
 use statement::Statement;
 use expression::Expression;
 pub struct Module {
-    pub items: Vec<Object>,
+    pub objects: Vec<Statement>,
 }
 
-pub enum Object {
-    Declaration(Declaration),
-    Statement(Statement),
-    Expression(Expression),
-}

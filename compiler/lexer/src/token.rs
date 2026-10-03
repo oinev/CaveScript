@@ -10,7 +10,7 @@ pub struct Token<'src> {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum TokenKind {
     // Special
-
+    LineEnd,
     // Literals
     Identifier,
     Integer,

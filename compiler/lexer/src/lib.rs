@@ -7,7 +7,6 @@ pub mod error;
 
 
 
-
 pub struct Lexer<'a> {
     source: &'a str,
     cursor: usize, // usize index into source / where you are in bytes from the start of file
@@ -38,6 +37,16 @@ impl<'a> Lexer<'a> {
         Some(c)
     }
 
+    fn ignore_whitespaces(&mut self) {
+        while let Some(c) = self.peek() {
+            if !c.is_whitespace() {
+                break;
+            }
+
+            self.advance();
+        }
+    }
+
     fn next_token(&mut self) -> Result<Option<Token<'a>>, TokenError> { // also refered to as dispatcher
         self.ignore_whitespaces();
         
@@ -60,16 +69,6 @@ impl<'a> Lexer<'a> {
         };
 
         return Ok(Some(token?))
-    }
-    
-    fn ignore_whitespaces(&mut self) {
-        while let Some(c) = self.peek() {
-            if !c.is_whitespace() {
-                break;
-            }
-
-            self.advance();
-        }
     }
     
 
@@ -99,7 +98,7 @@ impl<'a> Lexer<'a> {
 
         &self.source[start..self.cursor]
     }
-
+    
     fn is_identifier_start(c: char) -> bool { // to use on dispacher
         c.is_ascii_alphabetic() || c == '_'
     }
@@ -112,7 +111,7 @@ impl<'a> Lexer<'a> {
         matches!(c, 'n' | 't' | 'r' | '\\' | '\'')
     }
     // consume check ---}
-
+    
 
     // lexers ---{
     fn lex_ident_or_keyword(&mut self) -> Result<Token<'a>, TokenError> {
@@ -315,6 +314,14 @@ impl<'a> Lexer<'a> {
                     TokenKind::ColonColon
                 } else {
                     TokenKind::Colon
+                }
+            },
+
+            Some('\n') => {
+                if self.consume_if('\r') {
+                    TokenKind::LineEnd
+                } else {
+                    TokenKind::LineEnd
                 }
             },
 

@@ -215,14 +215,6 @@ var laser: Line = {
 }
 ```
 
-or in a compact form.
-
-```cavescript
-var laser: Line = {
-    length = width = 1
-}
-```
-
 Fields are accessed using the dot operator.
 
 ```cavescript

@@ -1,0 +1,19 @@
+1. introductionary tokens
+- scan first token 
+// assume we always start in a statement
+case tokenIs:
+
+    identifier => parse_identifier
+
+    {let, var} => parse_varDecl
+
+    fn => parse_funcDecl
+
+    impl => pars_implDecl
+
+    type => parse_typeDecl
+
+    _ => error::undifinedToken
+
+
+

@@ -29,7 +29,7 @@ impl<'a> Parser<'a> {
         self.peek_n(0)
     }
     fn peek_next(&self) -> Option<&Token<'a>> {
-        self.peek_n(1)
+        self.peek_n(1) 
     }
 
     fn peek_kind(&self) -> Option<TokenKind> {
@@ -67,11 +67,40 @@ impl<'a> Parser<'a> {
             None => Err(ParseError::UnexpectedEOF),
         }
     } 
+    fn parse(&self) -> Result<Module, ParseError> {unimplemented!()}
 
-    fn parse(&self) {  // 
-        // check for end of file
-        if self.peek_next() == None { return;}
 
-        
+    fn parse_statement(&self) -> Result<Option<Module>, ParseError> {
+
+        let node= match self.peek() { // checks for first token and maps to correct parser
+            None => return Ok(None),
+
+            Some(token) if self.check(TokenKind::Let) || 
+            self.check(TokenKind::Var) 
+            => self.parse_varDecl(),
+
+            Some(token) if self.check(TokenKind::Fn) 
+            => self.parse_funcDecl(),
+
+            Some(token) if self.check(TokenKind::Impl) 
+            => self.parse_implDecl(),
+
+            Some(token) if self.check(TokenKind::Type) 
+            => self.parse_typeDecl(),
+
+            Some(token) if self.check(TokenKind::Identifier)
+            => self.parse_identifier(),
+
+            Some(_) => self.parse_error(),
+
+        };
+
+        Ok(Some(node?))
         
     }
+
+    fn parse_varDecl(&self) {
+        
+    }
+    
+}

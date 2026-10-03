@@ -1,0 +1,15 @@
+                    Parser
+                      │
+             Recursive Descent
+                      │
+       ┌──────────────┼──────────────┐
+       ▼              ▼              ▼
+ declarations     statements       types
+       │              │
+       └───────┬──────┘
+               ▼
+        expression parser
+               │
+               ▼
+          Pratt parser
+
